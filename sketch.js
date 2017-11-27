@@ -9,7 +9,7 @@ var sketch = function (p) {
 	p.preload = function() {
 			// Load the data here.
             xytable = p.loadTable("xy.csv")
-			datable = p.loadTable("spectra2.csv");
+			datable = p.loadTable("spectra.csv");
 		};
 
     // Initial setup
@@ -159,17 +159,21 @@ var sketch = function (p) {
         smallplot.drawPoints();
         smallplot.endDraw();
     };
-    p.mouseOver = function() {
-        //Check if mouse is inside the circle
-        var d = dist(p.mouseX, p.mouseY, 360, 200);
+
+    p.mouseMoved = function () {
+
+        var d = p.dist(p.mouseX, p.mouseY, 360, 200);
         if (d < 600) {
             // Pick new random color values
-            r = random(255);
-            g = random(255);
-            b = random(255);
+            r = p.random(255);
+            g = p.random(255);
+            b = p.random(255);
+            p.redraw();
+        } else {
+            console.log(d);
         }
 
-    }; 
+    }
 
     p.mouseClicked = function () {
         if (plot.isOverBox(p.mouseX, p.mouseY)) {
