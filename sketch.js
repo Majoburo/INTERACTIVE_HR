@@ -8,7 +8,7 @@ var sketch = function (p) {
 	p.preload = function() {
 			// Load the data here.
             xytable = p.loadTable("xy.csv")
-			datable = p.loadTable("test_spectrum.csv");
+			datable = p.loadTable("spectra2.csv");
 		};
 
     // Initial setup
@@ -124,6 +124,9 @@ var sketch = function (p) {
 
         smallplot.setPoints(spoints[0]);
         smallplot.setPointColor(p.color(100, 100, 255, 50));
+
+        // don't redraw until we're ready
+        p.noLoop();
     };
 
     // Execute the sketch
@@ -170,6 +173,7 @@ var sketch = function (p) {
                 smallplot.setLogScale("");
                 smallplot.getYAxis().setAxisLabelText("y");
             }
+            p.redraw();
         }
     };
 };
