@@ -1,11 +1,13 @@
 var spoints = [];
 var datable = [];
+var xytable = [];
 var sketch = function (p) {
     // Global variables
     var plot, logScale;
     var smallplot;
 	p.preload = function() {
 			// Load the data here.
+            xytable = p.loadTable("xy.csv")
 			datable = p.loadTable("test_spectrum.csv");
 		};
 
@@ -44,12 +46,10 @@ var sketch = function (p) {
         // Prepare the points for the plot
         var points = [];
 
-        for (var i = 0; i < 1000; i++) {
-            var x = 10 + p.random(200);
-            var y = 10 * p.exp(0.015 * x);
-            var xErr = p.randomGaussian(0, 2);
-            var yErr = p.randomGaussian(0, 2);
-            points[i] = new GPoint(x + xErr, y + yErr);
+        for (var i = 0; i < xytable.getRowCount(); i++) {
+            x = xytable.getNum(i,0);
+            y = xytable.getNum(i,1);
+            points[i] = new GPoint(x, y);
         }
 
         var spoints = [];
