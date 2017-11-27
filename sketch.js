@@ -1,6 +1,7 @@
 var spoints = [];
 var datable = [];
 var xytable = [];
+var r,g,b;
 var sketch = function (p) {
     // Global variables
     var plot, logScale;
@@ -143,6 +144,7 @@ var sketch = function (p) {
         plot.drawTopAxis();
         plot.drawRightAxis();
         plot.drawTitle();
+        plot.setPointColor(p.color(r, g, b, 50));
         plot.drawPoints();
         plot.endDraw();
         smallplot.beginDraw();
@@ -153,9 +155,21 @@ var sketch = function (p) {
         smallplot.drawTopAxis();
         smallplot.drawRightAxis();
         smallplot.drawTitle();
+        smallplot.setPointColor(p.color(r, g, b, 50));
         smallplot.drawPoints();
         smallplot.endDraw();
     };
+    p.mouseOver = function() {
+        //Check if mouse is inside the circle
+        var d = dist(p.mouseX, p.mouseY, 360, 200);
+        if (d < 600) {
+            // Pick new random color values
+            r = random(255);
+            g = random(255);
+            b = random(255);
+        }
+
+    }; 
 
     p.mouseClicked = function () {
         if (plot.isOverBox(p.mouseX, p.mouseY)) {
@@ -165,8 +179,8 @@ var sketch = function (p) {
             if (logScale) {
                 plot.setLogScale("y");
                 plot.getYAxis().setAxisLabelText("log y");
-                smallplot.setLogScale("y");
-                smallplot.getYAxis().setAxisLabelText("log y");
+                //smallplot.setLogScale("y");
+                //smallplot.getYAxis().setAxisLabelText("log y");
             } else {
                 plot.setLogScale("");
                 plot.getYAxis().setAxisLabelText("y");
