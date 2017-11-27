@@ -1,9 +1,12 @@
+var spoints = [];
+var datable = [];
 var sketch = function (p) {
     // Global variables
     var plot, logScale;
+    var smallplot;
 	p.preload = function() {
 			// Load the data here.
-			//table = p.loadTable("data/lifeExpectancyDataset.csv", "header");
+			datable = p.loadTable("test_spectrum.csv");
 		};
 
     // Initial setup
@@ -15,6 +18,8 @@ var sketch = function (p) {
         // small plot
         smallHeight = 300; 
         padding = 100;
+
+        // canvas
 		canvasWidth = maxCanvasWidth;
 		canvasHeight = maxCanvasHeight ;
 
@@ -24,7 +29,9 @@ var sketch = function (p) {
         // line color
         linecolor = p.color(255,255,255);
 
+        //font info
         fontsize = 18;
+        fontcolor = p.color(255,255,255); 
 
 		if (canvasWidth > maxCanvasWidth) {
 			canvasHeight = canvasHeight * maxCanvasWidth / canvasWidth;
@@ -45,6 +52,20 @@ var sketch = function (p) {
             points[i] = new GPoint(x + xErr, y + yErr);
         }
 
+        var spoints = [];
+        var lambdas = [];
+        for (var i = 0; i < datable.getColumnCount(); i++) {
+            lambdas[i] = datable.getNum(0,i);
+        }
+        console.log(lambdas);
+        for (var i = 0; i < datable.getRowCount()-1; i++) {
+            spoints[i] = [];
+            for (var j = 0; j < datable.getColumnCount(); j++) {
+                spoints[i][j] = new GPoint(lambdas[j],datable.getNum(i+1,j));
+            }
+        }
+        console.log(spoints);
+
         // Create the plot
         plot = new GPlot(p);
         plot.setPos(0, 0);
@@ -52,7 +73,7 @@ var sketch = function (p) {
         plot.setBoxBgColor(bgcolor)
         plot.setBgColor(bgcolor)
         plot.setBoxLineColor(linecolor)
-        plot.setBoxLineWidth(5);
+        //plot.setBoxLineWidth(2);
 
         smallplot = new GPlot(p);
         smallplot.setPos(0,canvasHeight - smallHeight);
@@ -60,39 +81,39 @@ var sketch = function (p) {
         smallplot.setBgColor(bgcolor);
         smallplot.setBoxBgColor(bgcolor);
         smallplot.setBoxLineColor(linecolor)
-        smallplot.setBoxLineWidth(5);
+        smallplot.setBoxLineWidth(2);
 
         // Set the plot title and the axis labels
         plot.setTitleText("Hertzsprung\-Russell diagram");
-        plot.getTitle().setFontSize(fontsize);
+        plot.getTitle().setFontSize(fontsize+5);
         plot.getTitle().setFontColor(linecolor);
-        plot.getXAxis().setAxisLabelText("x");
+        plot.getXAxis().setAxisLabelText("Temperature");
         plot.getXAxis().setFontSize(fontsize);
-        plot.getXAxis().setFontColor(linecolor);
+        plot.getXAxis().setFontColor(fontcolor);
 
         smallplot.getXAxis().setAxisLabelText("Wavelength (angstrom)");
         smallplot.getXAxis().setFontSize(fontsize);
-        smallplot.getXAxis().setFontColor(linecolor);
+        smallplot.getXAxis().setFontColor(fontcolor);
 
         if (logScale) {
             plot.setLogScale("y");
-            plot.getYAxis().setAxisLabelText("log y");
+            plot.getYAxis().setAxisLabelText("Magnitude");
             plot.getYAxis().setFontSize(fontsize);
             plot.getYAxis().setFontColor(linecolor);
         } else {
             plot.setLogScale("");
-            plot.getYAxis().setAxisLabelText("y");
+            plot.getYAxis().setAxisLabelText("Luminosity");
             plot.getYAxis().setFontSize(fontsize);
             plot.getYAxis().setFontColor(linecolor);
         }
         if (logScale) {
             smallplot.setLogScale("y");
-            smallplot.getYAxis().setAxisLabelText("log y");
+            smallplot.getYAxis().setAxisLabelText("Magnitude");
             smallplot.getYAxis().setFontSize(fontisze);
             smallplot.getYAxis().setFontColor(linecolor);
         } else {
             smallplot.setLogScale("");
-            smallplot.getYAxis().setAxisLabelText("y");
+            smallplot.getYAxis().setAxisLabelText("Luminosity");
             smallplot.getYAxis().setFontSize(fontsize);
             smallplot.getYAxis().setFontColor(linecolor);
         }
@@ -100,6 +121,9 @@ var sketch = function (p) {
         // Add the points to the plot
         plot.setPoints(points);
         plot.setPointColor(p.color(100, 100, 255, 50));
+
+        smallplot.setPoints(spoints[0]);
+        smallplot.setPointColor(p.color(100, 100, 255, 50));
     };
 
     // Execute the sketch
