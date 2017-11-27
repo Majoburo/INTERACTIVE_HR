@@ -87,9 +87,9 @@ var sketch = function (p) {
         plot.setTitleText("Hertzsprung\-Russell diagram");
         plot.getTitle().setFontSize(fontsize+5);
         plot.getTitle().setFontColor(linecolor);
-        plot.getXAxis().setAxisLabelText("Temperature");
         plot.getXAxis().setFontSize(fontsize);
         plot.getXAxis().setFontColor(fontcolor);
+        plot.getXAxis().setAxisLabelText("Temperature");
 
         smallplot.getXAxis().setAxisLabelText("Wavelength (angstrom)");
         smallplot.getXAxis().setFontSize(fontsize);
@@ -99,23 +99,23 @@ var sketch = function (p) {
             plot.setLogScale("y");
             plot.getYAxis().setAxisLabelText("Magnitude");
             plot.getYAxis().setFontSize(fontsize);
-            plot.getYAxis().setFontColor(linecolor);
+            plot.getYAxis().setFontColor(fontcolor);
         } else {
             plot.setLogScale("");
             plot.getYAxis().setAxisLabelText("Luminosity");
             plot.getYAxis().setFontSize(fontsize);
-            plot.getYAxis().setFontColor(linecolor);
+            plot.getYAxis().setFontColor(fontcolor);
         }
         if (logScale) {
             smallplot.setLogScale("y");
             smallplot.getYAxis().setAxisLabelText("Magnitude");
             smallplot.getYAxis().setFontSize(fontisze);
-            smallplot.getYAxis().setFontColor(linecolor);
+            smallplot.getYAxis().setFontColor(fontcolor);
         } else {
             smallplot.setLogScale("");
             smallplot.getYAxis().setAxisLabelText("Luminosity");
             smallplot.getYAxis().setFontSize(fontsize);
-            smallplot.getYAxis().setFontColor(linecolor);
+            smallplot.getYAxis().setFontColor(fontcolor);
         }
 
         // Add the points to the plot
