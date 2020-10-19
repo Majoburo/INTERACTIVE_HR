@@ -1,7 +1,7 @@
 import numpy as np
 
 from bokeh.layouts import gridplot
-from bokeh.models import TapTool
+from bokeh.models import TapTool,HoverTool
 from bokeh.plotting import curdoc, figure
 
 import pandas as pd
@@ -14,10 +14,14 @@ spectra = pd.read_csv('spectra.csv')
 lambdas = spectra.columns.values.astype(np.float)
 
 #TOOLS="pan,wheel_zoom,box_select,lasso_select,reset"
-TOOLS="tap,reset"
+#TOOLS="tap,reset"
+hover = HoverTool(tooltips=[
+    ("index", "$index"),
+    ("(G-R,R)", "(@x, @y)"),
+])
 
 # create the scatter plot
-p = figure(tools=TOOLS, plot_width=800, plot_height=300, min_border=10, min_border_left=50, min_border_right=50,
+p = figure(tools=[hover,"tap","reset"], plot_width=800, plot_height=300, min_border=10, min_border_left=50, min_border_right=50,
            toolbar_location="above",y_axis_location="right",x_axis_location="below",
            title=None)
 p.background_fill_color = "#fafafa"
@@ -39,7 +43,7 @@ ph.sizing_mode='scale_both'
 #ph.quad(bottom=0, left=hedges[:-1], right=hedges[1:], top=hhist, color="white", line_color="#3A5785")
 #hh1 = ph.quad(bottom=0, left=hedges[:-1], right=hedges[1:], top=hzeros, alpha=0.5, **LINE_ARGS)
 #hh2 = ph.quad(bottom=0, left=hedges[:-1], right=hedges[1:], top=hzeros, alpha=0.1, **LINE_ARGS)
-spec_plt = ph.scatter(lambdas,spectra.iloc[0,:].values)
+spec_plt = ph.line(lambdas,spectra.iloc[0,:].values)
 
 layout = gridplot([[p], [ph]], merge_tools=False)
 
