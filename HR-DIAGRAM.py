@@ -3,7 +3,7 @@ from scipy.interpolate import InterpolatedUnivariateSpline
 import numpy as np
 import matplotlib.pyplot as plt
 import glob
-
+import pyfits as fits
 # Spectra and corresponding wavelenght range
 files = glob.glob("/Users/majoburo/Downloads/s_coelho07/*fits")
 x = np.arange(3000,13000.1,0.2)
