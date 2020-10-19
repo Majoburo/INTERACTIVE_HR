@@ -15,7 +15,7 @@ lambdas = spectra.columns.values.astype(np.float)
 
 # create the scatter plot
 p = figure(tools=["tap","reset"], plot_width=800, plot_height=300, min_border=10, min_border_left=50, min_border_right=50,
-           toolbar_location="above",y_axis_location="left",x_axis_location="below",
+           toolbar_location="above",y_axis_location="left",x_axis_location="below",y_axis_type="log",
            title=None)
 p.background_fill_color = "#fafafa"
 p.sizing_mode = 'scale_both'
@@ -26,8 +26,11 @@ r = p.scatter(x, y, size=10, color="#3A5785", alpha=0.6) #, xlabel="G-R",ylabel=
 
 LINE_ARGS = dict(color="#3A5785", line_color=None)
 
+shover = HoverTool(tooltips = [
+    ("(λ,L)", "($x, $y)"),
+])
 ph = figure(toolbar_location=None, plot_width=p.plot_width, plot_height=100,
-            min_border=10, min_border_left=50, y_axis_location="left")
+            min_border=10, min_border_left=50, y_axis_location="left",tools=[shover])
 ph.xgrid.grid_line_color = None
 ph.yaxis.major_label_orientation = np.pi/4
 ph.background_fill_color = "#fafafa"
