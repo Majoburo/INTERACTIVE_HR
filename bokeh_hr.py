@@ -1,10 +1,10 @@
-import numpy as np
-
 from bokeh.layouts import gridplot
 from bokeh.models import TapTool,HoverTool,CustomJS,ColumnDataSource
 from bokeh.plotting import curdoc, figure
-
+from bokeh.io import output_file,show
 import pandas as pd
+import numpy as np
+output_file("/home/robbie/code/INTERACTIVE_HR/output.html")
 
 df = pd.read_csv('xy.csv',header=None)
 x = df[0].values # g-r
@@ -61,3 +61,5 @@ layout = gridplot([[p], [ph]], merge_tools=False)
 
 curdoc().add_root(layout)
 curdoc().title = "Hertzsprung-Russell Diagram"
+
+show(layout)
