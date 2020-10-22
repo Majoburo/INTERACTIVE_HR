@@ -9,12 +9,12 @@ import pandas as pd
 import numpy as np
 output_file("/home/robbie/code/INTERACTIVE_HR/output.html")
 
-df = pd.read_csv('xy.csv',header=None)
-x = df[0].values # g-r
-y = df[1].values # r
+df = pd.read_csv('xy.csv',header=None,skiprows=1)
+X = df[1].values # Abs mag
+Y = df[0].values # color
 
-spectra = pd.read_csv('spectra.csv')
-lambdas = spectra.columns.values.astype(np.float)
+spectra = pd.read_csv('spectra.csv',skiprows=1,header=None)
+lambdas = spectra.iloc[0,:] #spectra.columns.values.astype(np.float)
 
 # background
 # Load in Full Gaia Dataset
@@ -32,7 +32,7 @@ ydiff = ylow-yupp
 aspect = ydiff/xdiff
 
 # Initialize Light Curve Plot
-fig_cmd = figure(plot_height=300, plot_width=800, sizing_mode='scale_both',
+fig_cmd = figure(plot_height=200, plot_width=300, sizing_mode='scale_both',
                  x_range=[xlow,xupp], y_range=[ylow,yupp],
                  tools="pan,wheel_zoom,box_zoom,reset",
                  title=None,
@@ -57,6 +57,7 @@ fig_cmd.add_tools(HoverTool(
         tooltips=[("count", "@c"), ("(q,r)", "(@q, @r)")],
         mode="mouse", point_policy="follow_mouse", renderers=[r]))
 
+scat = fig_cmd.scatter(X, Y, size=10, color="#3A5785", alpha=0.8) #, xlabel="G-R",ylabel="R")
 
 # Main HRD
 #p = figure(tools=["tap","reset"], plot_width=800, plot_height=300, min_border=10, min_border_left=50, min_border_right=50,
@@ -73,7 +74,7 @@ fig_cmd.add_tools(HoverTool(
 shover = HoverTool(tooltips = [
     ("(λ,L)", "($x, $y)"),
 ])
-ph = figure(toolbar_location=None, plot_width=fig_cmd.plot_width, plot_height=100,
+ph = figure(toolbar_location=None, plot_width=300, plot_height=100,
             min_border=10, min_border_left=50, y_axis_location="left",tools=[shover])
 ph.xgrid.grid_line_color = None
 ph.yaxis.major_label_orientation = np.pi/4
@@ -82,26 +83,27 @@ ph.sizing_mode='scale_both'
 ph.xaxis.axis_label = "Wavelength (Å)"
 ph.yaxis.axis_label = "Luminosity"
 
-#spectrum = ColumnDataSource(dict(x=lambdas,y=spectra.iloc[0,:].values))
-#spec_plt = ph.line("x","y",source=spectrum)
-#
-#hoveractive = True
-#code = '''
-#const ind = cb_data.index.indices.slice(-1)[0];
-#if (hoveractive && ind != undefined) {
-#    source.data.y = spectra[ind];
-#    source.change.emit();
-#}
-#'''
-#callback = CustomJS(args={
-#    'hoveractive': hoveractive,
-#    'spectra' :spectra.values,
-#    'source' :spec_plt.data_source,
-#    },code=code)
-#hover = HoverTool(tooltips=None,callback=callback,renderers=[r])
-#fig_cmd.add_tools(hover)
+spectrum = ColumnDataSource(dict(x=lambdas,y=spectra.iloc[1,:].values))
+spec_plt = ph.line("x","y",source=spectrum)
 
-layout = gridplot([[fig_cmd], [ph]], merge_tools=False)
+hoveractive = True
+code = '''
+const ind = cb_data.index.indices.slice(-1)[0];
+if (hoveractive && ind != undefined) {
+    source.data.y = spectra[ind+1];
+    source.change.emit();
+}
+'''
+callback = CustomJS(args={
+    'hoveractive': hoveractive,
+    'spectra' :spectra.values,
+    'source' :spec_plt.data_source,
+    },code=code)
+hover = HoverTool(tooltips=None,callback=callback,renderers=[scat])
+fig_cmd.add_tools(hover)
+
+layout = gridplot([[fig_cmd], [ph]], merge_tools=False,sizing_mode='scale_both')
+#layout = gridplot([[fig_cmd]], merge_tools=False,sizing_mode='scale_height')
 
 curdoc().add_root(layout)
 curdoc().title = "Hertzsprung-Russell Diagram"
