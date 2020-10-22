@@ -13,9 +13,9 @@ df = pd.read_csv('xy.csv',header=None,skiprows=1)
 X = df[1].values # Abs mag
 Y = df[0].values # color
 
-spectra = pd.read_csv('spectra.csv',skiprows=1,header=None)
-lambdas = spectra.iloc[0,:] #spectra.columns.values.astype(np.float)
-
+spectra = pd.read_csv('spectra.csv',skiprows=1)
+#lambdas = spectra.iloc[0,:] #spectra.columns.values.astype(np.float)
+lambdas = spectra.columns.values.astype(np.float)
 # background
 # Load in Full Gaia Dataset
 full_gaia = pd.read_csv("HRD_light_gaia_query.csv")
@@ -83,14 +83,14 @@ ph.sizing_mode='scale_both'
 ph.xaxis.axis_label = "Wavelength (Å)"
 ph.yaxis.axis_label = "Luminosity"
 
-spectrum = ColumnDataSource(dict(x=lambdas,y=spectra.iloc[1,:].values))
+spectrum = ColumnDataSource(dict(x=lambdas,y=spectra.iloc[0,:].values))
 spec_plt = ph.line("x","y",source=spectrum)
 
 hoveractive = True
 code = '''
 const ind = cb_data.index.indices.slice(-1)[0];
 if (hoveractive && ind != undefined) {
-    source.data.y = spectra[ind+1];
+    source.data.y = spectra[ind];
     source.change.emit();
 }
 '''
