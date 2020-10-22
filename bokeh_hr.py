@@ -80,8 +80,8 @@ ph.xgrid.grid_line_color = None
 ph.yaxis.major_label_orientation = np.pi/4
 ph.background_fill_color = "#fafafa"
 ph.sizing_mode='scale_both'
-ph.xaxis.axis_label = "Wavelength (Å)"
-ph.yaxis.axis_label = "Luminosity"
+ph.yaxis.axis_label = "Wavelength (Å)"
+ph.xaxis.axis_label = "Luminosity"
 
 spectrum = ColumnDataSource(dict(x=lambdas,y=spectra.iloc[0,:].values))
 spec_plt = ph.line("x","y",source=spectrum)
