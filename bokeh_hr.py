@@ -32,7 +32,7 @@ ydiff = ylow-yupp
 aspect = ydiff/xdiff
 
 # Initialize Light Curve Plot
-fig_cmd = figure(plot_height=200, plot_width=300, sizing_mode='scale_both',
+fig_cmd = figure(plot_height=280, plot_width=800, sizing_mode='scale_both',
                  x_range=[xlow,xupp], y_range=[ylow,yupp],
                  tools="pan,wheel_zoom,box_zoom,reset",
                  title=None,
@@ -74,7 +74,7 @@ scat = fig_cmd.scatter(X, Y, size=10, color="#3A5785", alpha=0.8) #, xlabel="G-R
 shover = HoverTool(tooltips = [
     ("(λ,L)", "($x, $y)"),
 ])
-ph = figure(toolbar_location=None, plot_width=300, plot_height=100,
+ph = figure(toolbar_location=None, plot_width=fig_cmd.plot_width, plot_height=100,
             min_border=10, min_border_left=50, y_axis_location="left",tools=[shover])
 ph.xgrid.grid_line_color = None
 ph.yaxis.major_label_orientation = np.pi/4
