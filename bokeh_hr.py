@@ -7,7 +7,7 @@ from bokeh.transform import log_cmap
 from bokeh.palettes import Greys256
 import pandas as pd
 import numpy as np
-output_file("output.html")
+output_file("output.html", title= "Milky Way Color-Magnitude Diagram (and some spectra)")
 
 df = pd.read_csv('xy.csv',header=None,skiprows=1)
 X = df[1].values # Abs mag
