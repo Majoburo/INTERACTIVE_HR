@@ -1,7 +1,6 @@
 import pandas as pd
 from scipy.interpolate import InterpolatedUnivariateSpline
 import numpy as np
-import matplotlib.pyplot as plt
 import glob
 from astropy.io import fits
 from os import path
