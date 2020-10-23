@@ -7,7 +7,7 @@ from bokeh.transform import log_cmap
 from bokeh.palettes import Greys256
 import pandas as pd
 import numpy as np
-output_file("/home/robbie/code/INTERACTIVE_HR/output.html")
+output_file("output.html")
 
 df = pd.read_csv('xy.csv',header=None,skiprows=1)
 X = df[1].values # Abs mag
@@ -39,8 +39,8 @@ fig_cmd = figure(plot_height=280, plot_width=800, sizing_mode='scale_both',
                  min_border=10, min_border_left=50, min_border_right=50,
                  toolbar_location="above", border_fill_color="whitesmoke")
 fig_cmd.toolbar.logo = None
-fig_cmd.yaxis.axis_label = 'Color (BP-RP)'
-fig_cmd.xaxis.axis_label = 'Absolute Magnitude (G)'
+fig_cmd.xaxis.axis_label = 'Color (BP-RP)'
+fig_cmd.yaxis.axis_label = 'Absolute Magnitude (G)'
 # Generate Hexbin CMD for full Gaia Sample
 bins = hexbin(bprp, mag, 0.05, aspect_scale=aspect)
 palette = Greys256[::-1]
@@ -80,8 +80,8 @@ ph.xgrid.grid_line_color = None
 ph.yaxis.major_label_orientation = np.pi/4
 ph.background_fill_color = "#fafafa"
 ph.sizing_mode='scale_both'
-ph.yaxis.axis_label = "Wavelength (Å)"
-ph.xaxis.axis_label = "Luminosity"
+ph.xaxis.axis_label = "Wavelength (Å)"
+ph.yaxis.axis_label = "Luminosity"
 
 spectrum = ColumnDataSource(dict(x=lambdas,y=spectra.iloc[0,:].values))
 spec_plt = ph.line("x","y",source=spectrum)
